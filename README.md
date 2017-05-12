@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/LosYakuza/jrpg-2017a-cliente.svg?branch=master)](https://travis-ci.org/LosYakuza/jrpg-2017a-cliente)
+
 # World Of Middle Earth (WOME) - cliente
 
 ## Sobre las personas
@@ -12,12 +14,10 @@
 
 ### Integrantes del equipo
 
-* Completar ([xxxx](https://github.com/xxxx))
-* Completar ([xxxx](https://github.com/xxxx))
-* Completar ([xxxx](https://github.com/xxxx))
-* Completar ([xxxx](https://github.com/xxxx))
-* Completar ([xxxx](https://github.com/xxxx))
-* Completar ([xxxx](https://github.com/xxxx))
+* Micaela Ramirez ([mramirez96](https://github.com/mramirez96))
+* Leandro Ibaceta ([libaceta](https://github.com/libaceta))
+* Gabriel Vargas ([Einzamkeit](https://github.com/Einzamkeit))
+* Juan Arana ([aranajuan](https://github.com/aranajuan))
 
 ## Sobre la tecnología
 
