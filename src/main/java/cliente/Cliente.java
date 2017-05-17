@@ -121,7 +121,7 @@ public class Cliente extends Thread {
 					case Comando.REGISTRO:
 						if (paquete.getMensaje().equals(Paquete.msjExito)) {
 
-							// Abro el menu para la creació�n del personaje
+							// Abro el menu para la creación del personaje
 							MenuCreacionPj menuCreacionPJ = new MenuCreacionPj(this, paquetePersonaje);
 							menuCreacionPJ.setVisible(true);
 							
