@@ -60,7 +60,7 @@ public class Cliente extends Thread {
 			puerto = sc.nextInt();
 			sc.close();
 		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo de configuración config.txt");
+			//JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo de configuración config.txt");
 			e.printStackTrace();
 		}
 		
@@ -70,7 +70,7 @@ public class Cliente extends Thread {
 			entrada = new ObjectInputStream(cliente.getInputStream());
 			salida = new ObjectOutputStream(cliente.getOutputStream());
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Fallo al iniciar la aplicación. Revise la conexión con el servidor.");
+			//JOptionPane.showMessageDialog(null, "Fallo al iniciar la aplicación. Revise la conexión con el servidor.");
 			e.printStackTrace();
 		}
 	}
@@ -142,7 +142,7 @@ public class Cliente extends Thread {
 							if (paquete.getMensaje().equals(Paquete.msjFracaso))
 								JOptionPane.showMessageDialog(null, "No se pudo registrar.");
 
-							// El usuario no pudo iniciar sesi�n
+							// El usuario no pudo iniciar sesión
 							paqueteUsuario.setInicioSesion(false);
 						}
 						break;
