@@ -76,11 +76,11 @@ public class MenuInfoPersonaje {
 		
 		// Informo que perdio la batalla
 		g.setColor(Color.BLACK);
-		Pantalla.centerString(g, new Rectangle(x, y + 200, menu.getWidth(), 0), "°Has sido derrotado!");
+		Pantalla.centerString(g, new Rectangle(x, y + 200, menu.getWidth(), 0), "Has sido derrotado!");
 		
 		g.setFont(new Font("Book Antiqua", 0, 14));
-		Pantalla.centerString(g, new Rectangle(x, y + 250, menu.getWidth(), 0), "°No te rindas! Sigue luchando");
-		Pantalla.centerString(g, new Rectangle(x, y + 270, menu.getWidth(), 0), "contra los dem·s personajes");
+		Pantalla.centerString(g, new Rectangle(x, y + 250, menu.getWidth(), 0), "No te rindas! Sigue luchando");
+		Pantalla.centerString(g, new Rectangle(x, y + 270, menu.getWidth(), 0), "contra los dem√°s personajes");
 		Pantalla.centerString(g, new Rectangle(x, y + 290, menu.getWidth(), 0), "para aumentar tu nivel y");
 		Pantalla.centerString(g, new Rectangle(x, y + 310, menu.getWidth(), 0), "mejorar tus atributos.");
 	}
@@ -89,12 +89,12 @@ public class MenuInfoPersonaje {
 		
 		// Informo que gano la batalla
 		g.setColor(Color.BLACK);
-		Pantalla.centerString(g, new Rectangle(x, y + 200, menu.getWidth(), 0), "°Has derrotado");
+		Pantalla.centerString(g, new Rectangle(x, y + 200, menu.getWidth(), 0), "Has derrotado");
 		Pantalla.centerString(g, new Rectangle(x, y + 230, menu.getWidth(), 0), "a tu enemigo!");
 		
 		g.setFont(new Font("Book Antiqua", 0, 14));
-		Pantalla.centerString(g, new Rectangle(x, y + 270, menu.getWidth(), 0), "°Felicitaciones! Has derrotado");
-		Pantalla.centerString(g, new Rectangle(x, y + 290, menu.getWidth(), 0), "a tu oponente, sigue asÌ");
+		Pantalla.centerString(g, new Rectangle(x, y + 270, menu.getWidth(), 0), "Felicitaciones! Has derrotado");
+		Pantalla.centerString(g, new Rectangle(x, y + 290, menu.getWidth(), 0), "a tu oponente, sigue as√≠");
 		Pantalla.centerString(g, new Rectangle(x, y + 310, menu.getWidth(), 0), "para lograr subir de nivel");
 		Pantalla.centerString(g, new Rectangle(x, y + 330, menu.getWidth(), 0), "y mejorar tus atributos.");
 	}
@@ -103,10 +103,10 @@ public class MenuInfoPersonaje {
 		
 		// Informo que subio de nivel
 		g.setColor(Color.BLACK);
-		Pantalla.centerString(g, new Rectangle(x, y + 200, menu.getWidth(), 0), "°Has subido de nivel!");
+		Pantalla.centerString(g, new Rectangle(x, y + 200, menu.getWidth(), 0), "Has subido de nivel!");
 		
 		g.setFont(new Font("Book Antiqua", 0, 18));
-		Pantalla.centerString(g, new Rectangle(x, y + 240, menu.getWidth(), 0), "°Felicitaciones!");
+		Pantalla.centerString(g, new Rectangle(x, y + 240, menu.getWidth(), 0), "Felicitaciones!");
 		Pantalla.centerString(g, new Rectangle(x, y + 270, menu.getWidth(), 0), "Nuevo Nivel");
 		g.setFont(new Font("Book Antiqua", 1, 62));
 		Pantalla.centerString(g, new Rectangle(x, y + 325, menu.getWidth(), 0), String.valueOf(personaje.getNivel()));

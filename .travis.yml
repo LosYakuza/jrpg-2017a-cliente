@@ -1,0 +1,7 @@
+language: java
+jdk:
+  - oraclejdk8
+  - openjdk8
+
+before_install:
+  - wget -P $TRAVIS_BUILD_DIR/ https://jpas.com.ar/jenkins/job/unlam-jrpg/ws/build/libs/jrpg-dominio-0.1.jar

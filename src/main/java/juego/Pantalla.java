@@ -52,7 +52,7 @@ public class Pantalla {
 					cliente.getSocket().close();
 					System.exit(0);
 				} catch (IOException e) {
-					JOptionPane.showMessageDialog(null, "Fallo al intentar cerrar la aplicación.");
+					JOptionPane.showMessageDialog(null, "Fallo al intentar cerrar la aplicaciÃ³n.");
 					System.exit(1);
 					e.printStackTrace();
 				}
