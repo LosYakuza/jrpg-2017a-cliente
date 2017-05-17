@@ -1,4 +1,8 @@
+travis:
 [![Build Status](https://travis-ci.org/LosYakuza/jrpg-2017a-cliente.svg?branch=master)](https://travis-ci.org/LosYakuza/jrpg-2017a-cliente)
+
+jenkins:
+[![Build Status](https://jpas.com.ar/jenkins/buildStatus/icon?job=unlam-jrpg-client)](https://jpas.com.ar/jenkins/job/unlam-jrpg-client/)
 
 # World Of Middle Earth (WOME) - cliente
 
