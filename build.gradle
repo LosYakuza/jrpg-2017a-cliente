@@ -109,7 +109,7 @@ task fatJar(type: Jar) {
     	attributes "Main-Class": "frames.MenuInicio"
   	}
 
-    baseName = project.name
+    baseName = 'jrpg-cliente'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     from('src/main/java/frames') {
     	include '*.png'
