@@ -11,7 +11,7 @@ sourceCompatibility = 1.7
 version = '0.1'
 test.ignoreFailures = true
 
-defaultTasks 'clean', 'compileJava', 'fatJar', 'test', 'checkstyleMain', 'pmd', 'findbugsMain', 'jacocoTestReport'
+defaultTasks 'clean', 'compileJava', 'test', 'fatJar' , 'checkstyleMain', 'pmd', 'findbugsMain', 'jacocoTestReport'
 
 sourceSets {
     main {
