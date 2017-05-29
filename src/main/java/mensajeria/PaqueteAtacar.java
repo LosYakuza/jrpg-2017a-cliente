@@ -1,6 +1,9 @@
 package mensajeria;
 
 import java.io.Serializable;
+import java.util.HashMap;
+
+import dominio.Personaje;
 
 public class PaqueteAtacar extends Paquete implements Serializable, Cloneable {
 
@@ -20,7 +23,29 @@ public class PaqueteAtacar extends Paquete implements Serializable, Cloneable {
 		this.nuevaSaludEnemigo = nuevaSaludEnemigo;
 		this.nuevaEnergiaEnemigo = nuevaEnergiaEnemigo;
 	}
-
+	
+	/**
+	 * Genera hash con datos actualizados del personaje.
+	 * @return datos en hash
+	 */
+	public HashMap<String, Object> getTodoPersonaje(){
+		HashMap<String, Object> datos = new HashMap<>();
+		datos.put(Personaje.ATTR_SALUD, getNuevaSaludPersonaje());
+		datos.put(Personaje.ATTR_ENERGIA, getNuevaEnergiaPersonaje());
+		return datos;
+	}
+	
+	/**
+	 * Genera hash con datos actualizados del enemigo.
+	 * @return datos en hash
+	 */
+	public HashMap<String, Object> getTodoEnemigo(){
+		HashMap<String, Object> datos = new HashMap<>();
+		datos.put(Personaje.ATTR_SALUD, getNuevaSaludEnemigo());
+		datos.put(Personaje.ATTR_ENERGIA, getNuevaEnergiaEnemigo());
+		return datos;
+	}
+	
 	public int getId() {
 		return id;
 	}
