@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 
+import dominio.Personaje;
 import estados.Estado;
 import estados.EstadoBatalla;
 import juego.Juego;
@@ -76,10 +77,14 @@ public class EscuchaMensajes extends Thread {
 					
 				case Comando.ATACAR:
 					paqueteAtacar = (PaqueteAtacar) gson.fromJson(objetoLeido, PaqueteAtacar.class);
-					juego.getEstadoBatalla().getEnemigo().setSalud(paqueteAtacar.getNuevaSaludPersonaje());
-					juego.getEstadoBatalla().getEnemigo().setEnergia(paqueteAtacar.getNuevaEnergiaPersonaje());
-					juego.getEstadoBatalla().getPersonaje().setSalud(paqueteAtacar.getNuevaSaludEnemigo());
-					juego.getEstadoBatalla().getPersonaje().setEnergia(paqueteAtacar.getNuevaEnergiaEnemigo());
+					HashMap<String, Object> datos = juego.getEstadoBatalla().getPersonaje().getTodo();
+					datos.putAll(paqueteAtacar.getTodoPersonaje());
+					juego.getEstadoBatalla().getPersonaje().actualizar(datos);
+					
+					datos = juego.getEstadoBatalla().getEnemigo().getTodo();
+					datos.putAll(paqueteAtacar.getTodoEnemigo());
+					juego.getEstadoBatalla().getEnemigo().actualizar(datos);
+
 					juego.getEstadoBatalla().setMiTurno(true);
 					break;
 					
