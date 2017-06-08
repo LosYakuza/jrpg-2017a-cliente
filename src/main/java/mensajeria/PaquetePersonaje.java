@@ -1,7 +1,11 @@
 package mensajeria;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 
+import dominio.Item;
+import dominio.ModificadorSegunItem;
+import dominio.Operacion;
 import estados.Estado;
 
 public class PaquetePersonaje extends Paquete implements Serializable, Cloneable {
@@ -19,6 +23,7 @@ public class PaquetePersonaje extends Paquete implements Serializable, Cloneable
 	private int inteligencia;
 	private int nivel;
 	private int experiencia;
+	private LinkedList<Item> inventario = new LinkedList<Item>();
 
 	public PaquetePersonaje() {
 		estado = Estado.estadoOffline;
@@ -142,6 +147,27 @@ public class PaquetePersonaje extends Paquete implements Serializable, Cloneable
 
 	public void setInteligencia(int inteligencia) {
 		this.inteligencia = inteligencia;
+	}
+
+	public LinkedList<Item> getInventario() {
+		return inventario;
+	}
+
+	public void setInventario(LinkedList<Item> inventario) {
+		this.inventario = inventario;
+	}
+
+	// TODO: Habría que armar un PaqueteItem o algo así para que el personaje se lo equipe solo. Acá rompe el encapsulamiento.
+	public void equiparItem(int valorSalud, int opSalud, int valorFuerza, int opFuerza, 
+			int valorDestreza, int opDestreza, int valorInteligencia, int opInteligencia,
+			int valorEnergia, int opEnergia) {
+		ModificadorSegunItem modSalud = new ModificadorSegunItem(valorSalud, Operacion.operacionSegunId(opSalud));
+		ModificadorSegunItem modFuerza = new ModificadorSegunItem(valorFuerza, Operacion.operacionSegunId(opFuerza));
+		ModificadorSegunItem modDestreza = new ModificadorSegunItem(valorDestreza, Operacion.operacionSegunId(opDestreza));
+		ModificadorSegunItem modInteligencia = new ModificadorSegunItem(valorInteligencia, Operacion.operacionSegunId(opInteligencia));
+		ModificadorSegunItem modEnergia= new ModificadorSegunItem(valorEnergia, Operacion.operacionSegunId(opEnergia));
+		
+		inventario.add(new Item(modSalud, modFuerza, modDestreza, modInteligencia, modEnergia));
 	}
 
 	public Object clone() {
