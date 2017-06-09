@@ -232,6 +232,7 @@ public class EstadoBatalla extends Estado {
 		experiencia = paqueteEnemigo.getExperiencia();
 		nivel = paqueteEnemigo.getNivel();
 		id = paqueteEnemigo.getId();
+		inventario = paqueteEnemigo.getInventario();
 
 		casta = null;
 		if (paqueteEnemigo.getCasta().equals("Guerrero")) {
