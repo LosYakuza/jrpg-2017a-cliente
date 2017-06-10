@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 
 import entidades.Entidad;
 import interfaz.EstadoDePersonaje;
+import interfaz.GrafInventario;
 import interfaz.MenuInfoPersonaje;
 import juego.Juego;
 import juego.Pantalla;
@@ -76,6 +77,7 @@ public class EstadoJuego extends Estado {
 		entidadPersonaje.graficarNombre(g);
 		g.drawImage(Recursos.marco, 0, 0, juego.getAncho(), juego.getAlto(), null);
 		EstadoDePersonaje.dibujarEstadoDePersonaje(g, 5, 5, paquetePersonaje, miniaturaPersonaje);
+		GrafInventario.dibujarInventario(g, 5, 100, paquetePersonaje);
 		if(haySolicitud)
 			menuEnemigo.graficar(g, tipoSolicitud);
 			
