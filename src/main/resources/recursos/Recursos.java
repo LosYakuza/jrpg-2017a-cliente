@@ -7,10 +7,11 @@ import java.util.Map;
 
 import frames.MenuCarga;
 import mundo.Tile;
+import dominio.Item;
 
 public class Recursos {
 
-	private static int ELEMENTOS = 65;
+	private static int ELEMENTOS = 76;
 	private static int ANCHOBARRA = 345;
 
 	private static int ANCHO; // Ancho del frame a obtener
@@ -78,7 +79,11 @@ public class Recursos {
 	
 	public static Map<String, BufferedImage> habilidades = new HashMap<>();
 	// Fin Batalla
-	
+
+	// Inventario - items
+	public static BufferedImage inventario;
+	public static Map<String, BufferedImage> items = new HashMap<>();
+	// Fin Inventario - items
 
 	// Se cargan todos los recursos del juego una sola vez al inicio
 
@@ -426,6 +431,16 @@ public class Recursos {
 		menuBatallaDeshabilitado = CargadorImagen.cargarImagen("/MenuBatallaDeshabilitado.png");
 		actualizarBarraDeCarga(++elementosCargados, menuCarga);
 		// Fin Batalla
+
+		// Inventario - items
+		inventario = CargadorImagen.cargarImagen("/Inventario.png");
+		actualizarBarraDeCarga(++elementosCargados, menuCarga);
+
+		for (String name : Item.nameItems) {
+			items.put(name, CargadorImagen.cargarImagen("/"+name+".png"));
+			actualizarBarraDeCarga(++elementosCargados, menuCarga);
+		}
+		// Fin Inventario - item
 	}
 
 	private static void actualizarBarraDeCarga(int elementosCargados, MenuCarga menuCarga) {

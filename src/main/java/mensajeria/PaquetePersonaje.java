@@ -160,15 +160,14 @@ public class PaquetePersonaje extends Paquete implements Serializable, Cloneable
 	// TODO: Habría que armar un PaqueteItem o algo así para que el personaje se lo equipe solo. Acá rompe el encapsulamiento.
 	public void equiparItem(int valorSalud, int opSalud, int valorFuerza, int opFuerza, 
 			int valorDestreza, int opDestreza, int valorInteligencia, int opInteligencia,
-			int valorEnergia, int opEnergia, int id) {
+			int valorEnergia, int opEnergia, int id, String name) {
 		ModificadorSegunItem modSalud = new ModificadorSegunItem(valorSalud, Operacion.operacionSegunId(opSalud));
 		ModificadorSegunItem modFuerza = new ModificadorSegunItem(valorFuerza, Operacion.operacionSegunId(opFuerza));
 		ModificadorSegunItem modDestreza = new ModificadorSegunItem(valorDestreza, Operacion.operacionSegunId(opDestreza));
 		ModificadorSegunItem modInteligencia = new ModificadorSegunItem(valorInteligencia, Operacion.operacionSegunId(opInteligencia));
 		ModificadorSegunItem modEnergia= new ModificadorSegunItem(valorEnergia, Operacion.operacionSegunId(opEnergia));
 		
-		Item item = new Item(modSalud, modFuerza, modDestreza, modInteligencia, modEnergia);
-		item.setIdItem(id);
+		Item item = new Item(id, name, modSalud, modFuerza, modDestreza, modInteligencia, modEnergia);
 		inventario.add(item);
 	}
 
