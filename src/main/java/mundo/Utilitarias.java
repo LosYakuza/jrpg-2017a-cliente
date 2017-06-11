@@ -3,8 +3,11 @@ package mundo;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import javax.swing.JOptionPane;
+
+import frames.MenuJugar;
 
 
 public class Utilitarias {
@@ -13,7 +16,9 @@ public class Utilitarias {
 		StringBuilder builder = new StringBuilder();
 
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(path));
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					ClassLoader.getSystemResourceAsStream(path)
+					));
 			String linea;
 
 			while ((linea = br.readLine()) != null) {
