@@ -71,7 +71,6 @@ public class Entidad {
 	private final Animacion moverAbajo;
 	private final Animacion moverAbajoIzq;
 
-	private final Gson gson = new Gson();
 	private int intervaloEnvio = 0;
 
 	// pila de movimiento
@@ -163,7 +162,7 @@ public class Entidad {
 							juego.getEstadoJuego().setHaySolicitud(false, null, 0);
 
 							try {
-								juego.getCliente().getSalida().writeObject(gson.toJson(pBatalla));
+								juego.getCliente().getSalida().writeObject(pBatalla.getJson());
 							} catch (IOException e) {
 								JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor");
 								e.printStackTrace();
@@ -408,7 +407,7 @@ public class Entidad {
 		juego.getUbicacionPersonaje().setFrame(getFrame());
 		try {
 			juego.getCliente().getSalida()
-					.writeObject(gson.toJson(juego.getUbicacionPersonaje(), PaqueteMovimiento.class));
+					.writeObject(juego.getUbicacionPersonaje().getJson());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor.");
 			e.printStackTrace();

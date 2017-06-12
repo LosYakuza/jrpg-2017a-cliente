@@ -35,8 +35,7 @@ public class EstadoJuego extends Estado {
 	private Map<Integer, PaquetePersonaje> personajesConectados;
 	private boolean haySolicitud;
 	private int tipoSolicitud;
-	
-	private final Gson gson = new Gson();
+
 	
 	private BufferedImage miniaturaPersonaje;
 	
@@ -53,8 +52,8 @@ public class EstadoJuego extends Estado {
 			// Le envio al servidor que me conecte al mapa y mi posicion
 			juego.getPersonaje().setComando(Comando.CONEXION);
 			juego.getPersonaje().setEstado(Estado.estadoJuego);
-			juego.getCliente().getSalida().writeObject(gson.toJson(juego.getPersonaje(), PaquetePersonaje.class));
-			juego.getCliente().getSalida().writeObject(gson.toJson(juego.getUbicacionPersonaje(), PaqueteMovimiento.class));
+			juego.getCliente().getSalida().writeObject(juego.getPersonaje().getJson());
+			juego.getCliente().getSalida().writeObject(juego.getUbicacionPersonaje().getJson());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor al ingresar al mundo.");
 			e.printStackTrace();

@@ -27,7 +27,6 @@ public class EscuchaMensajes extends Thread {
 	private Juego juego;
 	private Cliente cliente;
 	private ObjectInputStream entrada;
-	private final Gson gson = new Gson();
 
 	public EscuchaMensajes(Juego juego) {
 		this.juego = juego;
@@ -52,20 +51,20 @@ public class EscuchaMensajes extends Thread {
 				
 				String objetoLeido = (String)entrada.readObject();
 
-				paquete = gson.fromJson(objetoLeido , Paquete.class);
+				paquete = Paquete.loadJson(objetoLeido);
 				
 				switch (paquete.getComando()) {
 	
 				case Comando.CONEXION:
-					juego.setPersonajesConectados((Map<Integer, PaquetePersonaje>) gson.fromJson(objetoLeido, PaqueteDePersonajes.class).getPersonajes());
+					juego.setPersonajesConectados((Map<Integer, PaquetePersonaje>) ((PaqueteDePersonajes)paquete).getPersonajes());
 					break;
 
 				case Comando.MOVIMIENTO:
-					juego.setUbicacionPersonajes((Map<Integer, PaqueteMovimiento>) gson.fromJson(objetoLeido, PaqueteDeMovimientos.class).getPersonajes());
+					juego.setUbicacionPersonajes((Map<Integer, PaqueteMovimiento>) ((PaqueteDeMovimientos)paquete).getPersonajes());
 					break;
 					
 				case Comando.BATALLA:
-					paqueteBatalla = gson.fromJson(objetoLeido, PaqueteBatalla.class);
+					paqueteBatalla = (PaqueteBatalla)paquete;
 					juego.getPersonaje().setEstado(Estado.estadoBatalla);
 					Estado.setEstado(null);
 					juego.setEstadoBatalla(new EstadoBatalla(juego, paqueteBatalla));
@@ -73,7 +72,7 @@ public class EscuchaMensajes extends Thread {
 					break;
 					
 				case Comando.ATACAR:
-					paqueteAtacar = (PaqueteAtacar) gson.fromJson(objetoLeido, PaqueteAtacar.class);
+					paqueteAtacar = (PaqueteAtacar) paquete;
 					HashMap<String, Object> datos = juego.getEstadoBatalla().getPersonaje().getTodo();
 					datos.putAll(paqueteAtacar.getTodoPersonaje());
 					juego.getEstadoBatalla().getPersonaje().actualizar(datos);
@@ -86,13 +85,13 @@ public class EscuchaMensajes extends Thread {
 					break;
 					
 				case Comando.FINALIZARBATALLA:
-					paqueteFinalizarBatalla = (PaqueteFinalizarBatalla) gson.fromJson(objetoLeido, PaqueteFinalizarBatalla.class);
+					paqueteFinalizarBatalla = (PaqueteFinalizarBatalla) paquete;
 					juego.getPersonaje().setEstado(Estado.estadoJuego);
 					Estado.setEstado(juego.getEstadoJuego());
 					break;
 					
 				case Comando.ACTUALIZARPERSONAJE:
-					paquetePersonaje = (PaquetePersonaje) gson.fromJson(objetoLeido, PaquetePersonaje.class);
+					paquetePersonaje = (PaquetePersonaje) paquete;
 
 					juego.getPersonajesConectados().put(paquetePersonaje.getId(), paquetePersonaje);
 					
