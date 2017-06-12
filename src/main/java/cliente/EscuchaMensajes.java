@@ -28,9 +28,6 @@ public class EscuchaMensajes extends Thread {
 	private Cliente cliente;
 	private ObjectInputStream entrada;
 	private final Gson gson = new Gson();
-	
-	private Map<Integer, PaqueteMovimiento> ubicacionPersonajes;
-	private Map<Integer, PaquetePersonaje> personajesConectados;
 
 	public EscuchaMensajes(Juego juego) {
 		this.juego = juego;
@@ -48,8 +45,8 @@ public class EscuchaMensajes extends Thread {
 			PaqueteBatalla paqueteBatalla;
 			PaqueteAtacar paqueteAtacar;
 			PaqueteFinalizarBatalla paqueteFinalizarBatalla;
-			personajesConectados = new HashMap<>();
-			ubicacionPersonajes = new HashMap<>();
+			juego.setPersonajesConectados(new HashMap<Integer, PaquetePersonaje>());
+			juego.setUbicacionPersonajes(new HashMap<Integer, PaqueteMovimiento>());
 
 			while (true) {
 				
@@ -60,11 +57,11 @@ public class EscuchaMensajes extends Thread {
 				switch (paquete.getComando()) {
 	
 				case Comando.CONEXION:
-					personajesConectados = (Map<Integer, PaquetePersonaje>) gson.fromJson(objetoLeido, PaqueteDePersonajes.class).getPersonajes();
+					juego.setPersonajesConectados((Map<Integer, PaquetePersonaje>) gson.fromJson(objetoLeido, PaqueteDePersonajes.class).getPersonajes());
 					break;
 
 				case Comando.MOVIMIENTO:
-					ubicacionPersonajes = (Map<Integer, PaqueteMovimiento>) gson.fromJson(objetoLeido, PaqueteDeMovimientos.class).getPersonajes();
+					juego.setUbicacionPersonajes((Map<Integer, PaqueteMovimiento>) gson.fromJson(objetoLeido, PaqueteDeMovimientos.class).getPersonajes());
 					break;
 					
 				case Comando.BATALLA:
@@ -97,8 +94,7 @@ public class EscuchaMensajes extends Thread {
 				case Comando.ACTUALIZARPERSONAJE:
 					paquetePersonaje = (PaquetePersonaje) gson.fromJson(objetoLeido, PaquetePersonaje.class);
 
-					personajesConectados.remove(paquetePersonaje.getId());
-					personajesConectados.put(paquetePersonaje.getId(), paquetePersonaje);
+					juego.getPersonajesConectados().put(paquetePersonaje.getId(), paquetePersonaje);
 					
 					if(juego.getPersonaje().getId() == paquetePersonaje.getId()) {
 						juego.actualizarPersonaje();
@@ -110,13 +106,5 @@ public class EscuchaMensajes extends Thread {
 			JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor.");
 			e.printStackTrace();
 		}
-	}
-
-	public Map<Integer, PaqueteMovimiento> getUbicacionPersonajes() {
-		return ubicacionPersonajes;
-	}
-	
-	public Map<Integer, PaquetePersonaje> getPersonajesConectados(){
-		return personajesConectados;
 	}
 }
