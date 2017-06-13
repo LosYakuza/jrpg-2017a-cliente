@@ -18,7 +18,7 @@ public abstract class Comando {
 	public static final int REGISTRO = 6;
 	public static final int SALIR = 7;
 	
-	private Paquete paquete;
+	protected Paquete paquete;
 	
 	public void setPaquete(Paquete p){
 		this.paquete = p;

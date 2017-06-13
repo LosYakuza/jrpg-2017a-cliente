@@ -97,6 +97,7 @@ public class Paquete implements Serializable, Cloneable {
 			c.setPaquete(this);
 			return c;
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
 			return null;
 		}
 
