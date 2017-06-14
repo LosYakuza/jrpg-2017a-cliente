@@ -71,7 +71,6 @@ public class Entidad {
 	private final Animacion moverAbajo;
 	private final Animacion moverAbajoIzq;
 
-	private final Gson gson = new Gson();
 	private int intervaloEnvio = 0;
 
 	// pila de movimiento
@@ -163,7 +162,7 @@ public class Entidad {
 							juego.getEstadoJuego().setHaySolicitud(false, null, 0);
 
 							try {
-								juego.getCliente().getSalida().writeObject(gson.toJson(pBatalla));
+								juego.getCliente().getSalida().writeObject(pBatalla.getJson());
 							} catch (IOException e) {
 								JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor");
 								e.printStackTrace();
@@ -180,7 +179,7 @@ public class Entidad {
 					juego.getEstadoJuego().setHaySolicitud(false, null, 0);
 				}
 			} else {
-				Iterator<Integer> it = juego.getEscuchaMensajes().getUbicacionPersonajes().keySet().iterator();
+				Iterator<Integer> it = juego.getUbicacionPersonajes().keySet().iterator();
 				int key;
 				int tileMoverme[] = Mundo.mouseATile(posMouse[0] + juego.getCamara().getxOffset() - xOffset,
 						posMouse[1] + juego.getCamara().getyOffset() - yOffset);
@@ -188,17 +187,17 @@ public class Entidad {
 
 				while (it.hasNext()) {
 					key = (int) it.next();
-					actual = juego.getEscuchaMensajes().getUbicacionPersonajes().get(key);
+					actual = juego.getUbicacionPersonajes().get(key);
 					tilePersonajes = Mundo.mouseATile(actual.getPosX(), actual.getPosY());
 					if (actual != null && actual.getIdPersonaje() != juego.getPersonaje().getId()
-							&& juego.getEscuchaMensajes().getPersonajesConectados().get(actual.getIdPersonaje()) != null
-							&& juego.getEscuchaMensajes().getPersonajesConectados().get(actual.getIdPersonaje())
+							&& juego.getPersonajesConectados().get(actual.getIdPersonaje()) != null
+							&& juego.getPersonajesConectados().get(actual.getIdPersonaje())
 									.getEstado() == Estado.estadoJuego) {
 
 						if (tileMoverme[0] == tilePersonajes[0] && tileMoverme[1] == tilePersonajes[1]) {
 							idEnemigo = actual.getIdPersonaje();
 							juego.getEstadoJuego().setHaySolicitud(true,
-									juego.getEscuchaMensajes().getPersonajesConectados().get(idEnemigo), MenuInfoPersonaje.menuBatallar);
+									juego.getPersonajesConectados().get(idEnemigo), MenuInfoPersonaje.menuBatallar);
 							juego.getHandlerMouse().setNuevoClick(false);
 						}
 					}
@@ -408,7 +407,7 @@ public class Entidad {
 		juego.getUbicacionPersonaje().setFrame(getFrame());
 		try {
 			juego.getCliente().getSalida()
-					.writeObject(gson.toJson(juego.getUbicacionPersonaje(), PaqueteMovimiento.class));
+					.writeObject(juego.getUbicacionPersonaje().getJson());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor.");
 			e.printStackTrace();

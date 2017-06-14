@@ -28,8 +28,6 @@ public class Pantalla {
 	private JFrame pantalla;
 	private Canvas canvas;
 
-	private final Gson gson = new Gson();
-
 	public Pantalla(final String NOMBRE, final int ANCHO, final int ALTO, final Cliente cliente) {
 		pantalla = new JFrame(NOMBRE);
 		
@@ -46,7 +44,7 @@ public class Pantalla {
 					Paquete p = new Paquete();
 					p.setComando(Comando.DESCONECTAR);
 					p.setIp(cliente.getMiIp());
-					cliente.getSalida().writeObject(gson.toJson(p));
+					cliente.getSalida().writeObject(p.getJson());
 					cliente.getEntrada().close();
 					cliente.getSalida().close();
 					cliente.getSocket().close();

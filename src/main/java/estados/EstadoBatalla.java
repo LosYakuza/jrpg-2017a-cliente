@@ -46,8 +46,6 @@ public class EstadoBatalla extends Estado {
 	private boolean haySpellSeleccionada;
 	private boolean seRealizoAccion;
 
-	private Gson gson = new Gson();
-
 	private BufferedImage miniaturaPersonaje;
 	private BufferedImage miniaturaEnemigo;
 	
@@ -58,8 +56,8 @@ public class EstadoBatalla extends Estado {
 		mundo = new Mundo(juego, "recursos/mundoBatalla.txt", "recursos/mundoBatallaCapaDos.txt");
 		miTurno = paqueteBatalla.isMiTurno();
 
-		paquetePersonaje = juego.getEscuchaMensajes().getPersonajesConectados().get(paqueteBatalla.getId());
-		paqueteEnemigo = juego.getEscuchaMensajes().getPersonajesConectados().get(paqueteBatalla.getIdEnemigo());
+		paquetePersonaje = juego.getPersonajesConectados().get(paqueteBatalla.getId());
+		paqueteEnemigo = juego.getPersonajesConectados().get(paqueteBatalla.getIdEnemigo());
 
 		crearPersonajes();
 		
@@ -260,7 +258,7 @@ public class EstadoBatalla extends Estado {
 
 	public void enviarAtaque(PaqueteAtacar paqueteAtacar) {
 		try {
-			juego.getCliente().getSalida().writeObject(gson.toJson(paqueteAtacar));
+			juego.getCliente().getSalida().writeObject(paqueteAtacar.getJson());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Fallo la conexion con el servidor.");
 			e.printStackTrace();
@@ -269,7 +267,7 @@ public class EstadoBatalla extends Estado {
 
 	private void finalizarBatalla() {
 		try {
-			juego.getCliente().getSalida().writeObject(gson.toJson(paqueteFinalizarBatalla));
+			juego.getCliente().getSalida().writeObject(paqueteFinalizarBatalla.getJson());
 
 			paquetePersonaje.setSaludTope(personaje.getSaludTope());
 			paquetePersonaje.setEnergiaTope(personaje.getEnergiaTope());
@@ -292,8 +290,8 @@ public class EstadoBatalla extends Estado {
 			paquetePersonaje.setComando(Comando.ACTUALIZARPERSONAJE);
 			paqueteEnemigo.setComando(Comando.ACTUALIZARPERSONAJE);
 			
-			juego.getCliente().getSalida().writeObject(gson.toJson(paquetePersonaje));
-			juego.getCliente().getSalida().writeObject(gson.toJson(paqueteEnemigo));
+			juego.getCliente().getSalida().writeObject(paquetePersonaje.getJson());
+			juego.getCliente().getSalida().writeObject(paqueteEnemigo.getJson());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor.");
 			e.printStackTrace();
