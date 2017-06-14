@@ -116,6 +116,10 @@ task fatJar(type: Jar) {
     	include '*.jpg'
     	into 'frames'
   	}
+  	from('recursos') {
+    	include '*.txt'
+    	into 'recursos'
+  	}
  	
     with jar
 }
