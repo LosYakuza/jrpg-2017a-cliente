@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 
+import comandos.ComandoCliente;
 import frames.*;
 import juego.Juego;
 import mensajeria.Comando;
@@ -113,70 +114,12 @@ public class Cliente extends Thread {
 					// Recibo el paquete desde el servidor
 					String cadenaLeida = (String) entrada.readObject();
 					Paquete paquete = Paquete.loadJson(cadenaLeida);
-					switch (paquete.getComando()) {
-
-					case Comando.REGISTRO:
-						if (paquete.getMensaje().equals(Paquete.msjExito)) {
-
-							// Abro el menu para la creación del personaje
-							MenuCreacionPj menuCreacionPJ = new MenuCreacionPj(this, paquetePersonaje);
-							menuCreacionPJ.setVisible(true);
-
-							// Espero a que el usuario cree el personaje
-							wait();
-
-							// Le envio los datos al servidor
-							paquetePersonaje.setComando(Comando.CREACIONPJ);
-							salida.writeObject(paquetePersonaje.getJson());
-							JOptionPane.showMessageDialog(null, "Registro exitoso.");
-
-							// Recibo el paquete personaje con los datos (la id
-							// incluida)
-							paquetePersonaje = (PaquetePersonaje) Paquete.loadJson(((String) entrada.readObject()));
-
-							// Indico que el usuario ya inicio sesion
-							paqueteUsuario.setInicioSesion(true);
-
-						} else {
-							if (paquete.getMensaje().equals(Paquete.msjFracaso))
-								JOptionPane.showMessageDialog(null, "No se pudo registrar.");
-
-							// El usuario no pudo iniciar sesión
-							paqueteUsuario.setInicioSesion(false);
-						}
-						break;
-
-					case Comando.INICIOSESION:
-						if (paquete.getMensaje().equals(Paquete.msjExito)) {
-							// El usuario ya inicio sesion
-							paqueteUsuario.setInicioSesion(true);
-
-							// Recibo el paquete personaje con los datos
-							paquetePersonaje = (PaquetePersonaje) paquete;
-
-						} else {
-							if (paquete.getMensaje().equals(Paquete.msjFracaso))
-								JOptionPane.showMessageDialog(null,
-										"Error al iniciar sesión. Revise el usuario y la contraseña");
-
-							// El usuario no pudo iniciar sesión
-							paqueteUsuario.setInicioSesion(false);
-						}
-						break;
-
-					case Comando.SALIR:
-						// El usuario no pudo iniciar sesión
-						paqueteUsuario.setInicioSesion(false);
-						salida.writeObject(new Paquete(Comando.DESCONECTAR).getJson());
-						cliente.close();
-						break;
-
-					default:
-						break;
-					}
+					ComandoCliente cc = (ComandoCliente)paquete.getComandoObj(ComandoCliente.PACKAGEO);
+					cc.setCliente(this);
+					cc.ejecutar();
 
 				}
-
+					 
 				// Creo un paquete con el comando mostrar mapas
 				paquetePersonaje.setComando(Comando.MOSTRARMAPAS);
 
@@ -256,6 +199,10 @@ public class Cliente extends Thread {
 
 	public PaquetePersonaje getPaquetePersonaje() {
 		return paquetePersonaje;
+	}
+	
+	public void setPaquetePersonaje(PaquetePersonaje p) {
+		 paquetePersonaje = p;
 	}
 
 	public Juego getJuego() {
