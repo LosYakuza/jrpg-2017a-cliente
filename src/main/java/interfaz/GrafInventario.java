@@ -3,6 +3,7 @@ package interfaz;
 import java.awt.Graphics;
 
 import dominio.Item;
+import dominio.Peleador;
 import mensajeria.PaquetePersonaje;
 import recursos.Recursos;
 
@@ -14,7 +15,7 @@ public class GrafInventario {
 		int posX = 35 + x, posY = 60 + y, cantItemsPorFila = 0;
 		for (Item item : personaje.getInventario()) {
 			cantItemsTotal++; // TODO: que el personaje no acepte más de 9 ítems!!!! Así solo no los muestra. 
-			if (cantItemsTotal != 9) {
+			if (cantItemsTotal != Peleador.CANT_MAX_ITEMS) {
 				g.drawImage(Recursos.items.get(item.getNombre()), posX, posY, null);
 				cantItemsPorFila++;
 				
