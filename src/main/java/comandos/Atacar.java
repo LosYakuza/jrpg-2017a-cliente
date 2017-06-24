@@ -12,7 +12,6 @@ public class Atacar extends ComandoCliente {
 		HashMap<String, Object> datos = juego.getEstadoBatalla().getPersonaje().getTodo();
 		datos.putAll(paqueteAtacar.getTodoEnemigo());
 		juego.getEstadoBatalla().getPersonaje().actualizar(datos);
-		
 		datos = juego.getEstadoBatalla().getEnemigo().getTodo();
 		datos.putAll(paqueteAtacar.getTodoPersonaje());
 		juego.getEstadoBatalla().getEnemigo().actualizar(datos);
