@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 
+import chat.VentanaChat;
 import cliente.Cliente;
 import frames.MenuJugar;
 import mensajeria.Comando;
@@ -27,6 +28,7 @@ public class Pantalla {
 
 	private JFrame pantalla;
 	private Canvas canvas;
+	private static VentanaChat ventanaChat;
 
 	public Pantalla(final String NOMBRE, final int ANCHO, final int ALTO, final Cliente cliente) {
 		pantalla = new JFrame(NOMBRE);
@@ -59,6 +61,9 @@ public class Pantalla {
 
 		pantalla.setLocationRelativeTo(null);
 		pantalla.setVisible(false);
+		
+		ventanaChat = new VentanaChat(cliente.getPaquetePersonaje().getNombre());
+		pantalla.add(ventanaChat);
 
 		canvas = new Canvas();
 		canvas.setPreferredSize(new Dimension(ANCHO, ALTO));
@@ -95,5 +100,13 @@ public class Pantalla {
 	    int b = (r.height / 2) - (rHeight / 2) - rY;
 	    
 	    g.drawString(s, r.x + a, r.y + b);
+	}
+	
+	public static void invisibleChat() {
+		ventanaChat.setVisible(false);
+	}
+	
+	public static void visibleChat() {
+		ventanaChat.setVisible(true);
 	}
 }

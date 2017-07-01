@@ -23,6 +23,7 @@ import interfaz.EstadoDePersonaje;
 import interfaz.MenuBatalla;
 import interfaz.MenuInfoPersonaje;
 import juego.Juego;
+import juego.Pantalla;
 import mensajeria.Comando;
 import mensajeria.PaqueteAtacar;
 import mensajeria.PaqueteBatalla;
@@ -136,7 +137,7 @@ public class EstadoBatalla extends Estado {
 
 					if (menuBatalla.getBotonClickeado(posMouse[0], posMouse[1]) == 6) {
 						seRealizoAccion = true;
-						personaje.serEnergizado(5);
+						personaje.serEnergizado(20);
 						haySpellSeleccionada = true;
 					}
 				}
@@ -287,6 +288,8 @@ public class EstadoBatalla extends Estado {
 			
 			juego.getCliente().getSalida().writeObject(paquetePersonaje.getJson());
 			juego.getCliente().getSalida().writeObject(paqueteEnemigo.getJson());
+			
+			Pantalla.visibleChat();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor.");
 			e.printStackTrace();
