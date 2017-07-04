@@ -13,6 +13,7 @@ import dominio.Personaje;
 import estados.Estado;
 import estados.EstadoBatalla;
 import estados.EstadoJuego;
+import estados.EstadoMercado;
 import mensajeria.PaqueteMovimiento;
 import mensajeria.PaquetePersonaje;
 
@@ -32,6 +33,7 @@ public class Juego implements Runnable {
 	// Estados
 	private Estado estadoJuego;
 	private Estado estadoBatalla;
+	private Estado estadoMercado;
 
 	// HandlerMouse
 	private HandlerMouse handlerMouse;
@@ -218,6 +220,14 @@ public class Juego implements Runnable {
 		this.estadoBatalla = estadoBatalla;
 	}
 	
+	public EstadoMercado getEstadoMercado() {
+		return (EstadoMercado) estadoMercado;
+	}
+	
+	public void setEstadoMercado(EstadoMercado estadoMercado) {
+		this.estadoMercado = estadoMercado;
+	}
+
 	public Cliente getCliente() {
 		return cliente;
 	}

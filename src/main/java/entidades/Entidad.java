@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import juego.Juego;
 import juego.Pantalla;
 import mensajeria.PaqueteBatalla;
+import mensajeria.PaqueteMercado;
 import mensajeria.PaqueteMovimiento;
 import mundo.Grafo;
 import mundo.Mundo;
@@ -23,6 +24,7 @@ import recursos.Recursos;
 import entidades.Animacion;
 import estados.Estado;
 import interfaz.MenuInfoPersonaje;
+import interfaz.Mercado;
 
 public class Entidad {
 
@@ -146,7 +148,7 @@ public class Entidad {
 		posMouse = juego.getHandlerMouse().getPosMouse();
 
 		// Tomo el click izquierdo
-		if (juego.getHandlerMouse().getNuevoClick()) {
+		if (juego.getHandlerMouse().getNuevoClick()) { //aca escucha el click
 			if (juego.getEstadoJuego().getHaySolicitud()) {
 				
 				if (juego.getEstadoJuego().getMenuEnemigo().clickEnMenu(posMouse[0], posMouse[1])) {
@@ -163,6 +165,18 @@ public class Entidad {
 
 							try {
 								juego.getCliente().getSalida().writeObject(pBatalla.getJson());
+							} catch (IOException e) {
+								JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor");
+								e.printStackTrace();
+							}
+						} else if (juego.getEstadoJuego().getTipoSolicitud() == MenuInfoPersonaje.menuMercadeo){
+							PaqueteMercado pMercado = new PaqueteMercado(); //ver si lo puedo implementar al click de otra manera, como en EstadoBatalla/MenuBatalla
+							pMercado.setId(juego.getPersonaje().getId());
+							pMercado.setIdEnemigo(idEnemigo);
+
+							juego.getEstadoJuego().setHaySolicitud(false, null, 0);
+							try {
+								juego.getCliente().getSalida().writeObject(pMercado.getJson());
 							} catch (IOException e) {
 								JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor");
 								e.printStackTrace();
@@ -195,10 +209,17 @@ public class Entidad {
 									.getEstado() == Estado.estadoJuego) {
 
 						if (tileMoverme[0] == tilePersonajes[0] && tileMoverme[1] == tilePersonajes[1]) {
-							idEnemigo = actual.getIdPersonaje();
-							juego.getEstadoJuego().setHaySolicitud(true,
-									juego.getPersonajesConectados().get(idEnemigo), MenuInfoPersonaje.menuBatallar);
-							juego.getHandlerMouse().setNuevoClick(false);
+							if (Mercado.esZonaMercado()){
+								idEnemigo = actual.getIdPersonaje();
+								juego.getEstadoJuego().setHaySolicitud(true,
+										juego.getPersonajesConectados().get(idEnemigo), MenuInfoPersonaje.menuMercadeo); //aca mando al mercado si es zona mercado
+								juego.getHandlerMouse().setNuevoClick(false);
+							} else {
+								idEnemigo = actual.getIdPersonaje();
+								juego.getEstadoJuego().setHaySolicitud(true,
+										juego.getPersonajesConectados().get(idEnemigo), MenuInfoPersonaje.menuBatallar); //aca mando a la batalla
+								juego.getHandlerMouse().setNuevoClick(false);
+							}
 						}
 					}
 				}

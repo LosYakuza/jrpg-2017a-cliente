@@ -89,7 +89,7 @@ public class EstadoBatalla extends Estado {
 
 		if (miTurno) {
 			
-			if (juego.getHandlerMouse().getNuevoClick()) {
+			if (juego.getHandlerMouse().getNuevoClick()) { //aca escucha el click para la batalla
 				posMouse = juego.getHandlerMouse().getPosMouse();
 
 				if (menuBatalla.clickEnMenu(posMouse[0], posMouse[1])) {
