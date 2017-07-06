@@ -28,7 +28,7 @@ public class Entidad {
 
 	Juego juego;
 
-	// Tama�o de la entidad
+	// Tamaño de la entidad
 	private int ancho;
 	private int alto;
 
@@ -166,6 +166,7 @@ public class Entidad {
 							} catch (IOException e) {
 								JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor");
 								e.printStackTrace();
+								System.exit(1);
 							}
 						} else {
 							juego.getEstadoJuego().setHaySolicitud(false, null, 0);

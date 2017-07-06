@@ -44,7 +44,9 @@ public class Registro extends ComandoCliente {
 					paquetePersonaje = (PaquetePersonaje) Paquete
 							.loadJson(((String) cliente.getEntrada().readObject()));
 				} catch (ClassNotFoundException | IOException e) {
-
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor.");
+					System.exit(1);
 				}
 				// Indico que el usuario ya inicio sesion
 				paqueteUsuario.setInicioSesion(true);

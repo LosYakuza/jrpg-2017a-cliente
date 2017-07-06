@@ -258,6 +258,7 @@ public class EstadoBatalla extends Estado {
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Fallo la conexion con el servidor.");
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 
@@ -293,6 +294,7 @@ public class EstadoBatalla extends Estado {
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor.");
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 

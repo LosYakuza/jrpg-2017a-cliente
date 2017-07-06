@@ -80,7 +80,7 @@ public class VentanaChat extends JInternalFrame implements MessageHandler {
 			conn.start();
 		} catch (Exception e) {
 			e.printStackTrace();
-			//JOptionPane.showMessageDialog(this, "Error al conectar chat", "Error", JOptionPane.ERROR_MESSAGE);
+			recibido("<< No se pudo conectar chat >>" + "\n");
 		}
 	}
 	
@@ -113,22 +113,6 @@ public class VentanaChat extends JInternalFrame implements MessageHandler {
 
 	@Override
 	public void messageReceived(Message m) {
-		/*if(m.getSource().equals("server")){
-			if(m.getType() == Message.STATUS_INFO){
-				if(m.getDestination().equals("clientlist")){
-					agregaUsuariosEnLista(m.getText().split(","));
-				}
-				return;
-			}
-			if(m.getType() == Message.SERVER_FATAL){
-				JOptionPane.showMessageDialog(this, m.getText(), "Error", JOptionPane.ERROR_MESSAGE);
-				if(m.getDestination().equals("login")){
-					this.usr="";
-					this.setTitle("Chat");
-				}
-				return;
-			}
-		}*/
 		//Mensaje a todos
 		if(m.getDestination().equals("all")){
 			if(m.getType() == Message.USR_MSJ && !m.getSource().equals(nombrePj)){

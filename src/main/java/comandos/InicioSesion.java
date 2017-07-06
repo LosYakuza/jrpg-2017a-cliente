@@ -21,7 +21,7 @@ public class InicioSesion extends ComandoCliente {
 		} else {
 			if (paquete.getMensaje().equals(Paquete.msjFracaso))
 				JOptionPane.showMessageDialog(null,
-						"Error al iniciar sesión. Revise el usuario y la contraseña");
+						"Error al iniciar sesión.");
 
 			// El usuario no pudo iniciar sesión
 			paqueteUsuario.setInicioSesion(false);
