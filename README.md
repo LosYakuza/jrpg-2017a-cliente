@@ -1,8 +1,8 @@
 travis:
-[![Build Status](https://travis-ci.org/LosYakuza/jrpg-2017a-servidor.svg?branch=master)](https://travis-ci.org/LosYakuza/jrpg-2017a-servidor)
+[![Build Status](https://travis-ci.org/LosYakuza/jrpg-2017a-cliente.svg?branch=master)](https://travis-ci.org/LosYakuza/jrpg-2017a-cliente)
 
 jenkins:
-[![Build Status](https://jpas.com.ar/jenkins/buildStatus/icon?job=unlam-jrpg-server)](https://jpas.com.ar/jenkins/job/unlam-jrpg-server/)
+[![Build Status](https://jpas.com.ar/jenkins/buildStatus/icon?job=unlam-jrpg-client)](https://jpas.com.ar/jenkins/job/unlam-jrpg-client/)
 
 # World Of Middle Earth (WOME) - servidor
 
