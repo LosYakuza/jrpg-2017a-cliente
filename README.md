@@ -4,7 +4,7 @@ travis:
 jenkins:
 [![Build Status](https://jpas.com.ar/jenkins/buildStatus/icon?job=unlam-jrpg-client)](https://jpas.com.ar/jenkins/job/unlam-jrpg-client/)
 
-# World Of Middle Earth (WOME) - servidor
+# World Of Middle Earth (WOME) - cliente
 
 ## Sobre las personas
 
