@@ -14,6 +14,8 @@ public class Salir extends ComandoCliente {
 			cliente.getSalida().writeObject(new Paquete(Comando.DESCONECTAR).getJson());
 			cliente.getSocket().close();
 		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
 		}
 
 	}

@@ -46,7 +46,9 @@ public class Pantalla {
 					Paquete p = new Paquete();
 					p.setComando(Comando.DESCONECTAR);
 					p.setIp(cliente.getMiIp());
+					
 					cliente.getSalida().writeObject(p.getJson());
+					cliente.parar();
 					cliente.getEntrada().close();
 					cliente.getSalida().close();
 					cliente.getSocket().close();
