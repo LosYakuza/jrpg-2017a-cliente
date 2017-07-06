@@ -57,6 +57,7 @@ public class EstadoJuego extends Estado {
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor al ingresar al mundo.");
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 

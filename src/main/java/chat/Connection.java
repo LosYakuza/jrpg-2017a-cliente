@@ -36,18 +36,17 @@ public class Connection extends Thread{
 		while (c && stop==0) {
 			try {
 				Message msg = new Message(in.readUTF());
-				System.out.println("IN client: " + msg);
 				process(msg);
 			}catch(EOFException e){
-				
+				error("Mensaje no se pudo procesar");
 			}catch (IOException e) {
 				e.printStackTrace();
-				
 				c=false;
 			}
 			try {
 				Thread.sleep(200);
 			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 		kissoff();
@@ -57,7 +56,7 @@ public class Connection extends Thread{
 		try {
 			this.sock.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// sockey ya cerrado no es necesario manejar error
 			e.printStackTrace();
 		}
 	}
@@ -80,6 +79,14 @@ public class Connection extends Thread{
 
 	}
 
+	private void error(String msj) {
+		Message m = new Message();
+		m.setDestination("user");
+		m.setText(msj);
+		m.setType(Message.STATUS_INFO);
+		this.mh.messageReceived(m);
+	}
+	
 	private void login() throws IOException {
 		Message m = new Message();
 		m.setDestination("user");
