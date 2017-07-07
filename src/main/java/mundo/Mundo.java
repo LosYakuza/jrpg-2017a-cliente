@@ -105,11 +105,12 @@ public class Mundo {
 				while (it.hasNext()) {
 					key = (int) it.next();
 					actual = ubicacionPersonajes.get(key);
-					PaquetePersonaje pi = personajesConectados.get(actual.getIdPersonaje());
 					if (	actual != null && 
-							actual.getIdPersonaje() != juego.getPersonaje().getId() &&
-							pi.getEstado() == Estado.estadoJuego) {
-						if (Mundo.mouseATile(actual.getPosX(),
+							actual.getIdPersonaje() != juego.getPersonaje().getId()
+							) {
+						PaquetePersonaje pi = personajesConectados.get(actual.getIdPersonaje());
+						if (pi!= null && pi.getEstado() == Estado.estadoJuego &&
+								Mundo.mouseATile(actual.getPosX(),
 								actual.getPosY())[0] == j
 								&& Mundo.mouseATile(actual.getPosX(),
 										actual.getPosY())[1] == i ){
