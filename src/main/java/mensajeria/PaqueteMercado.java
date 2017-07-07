@@ -3,13 +3,14 @@ package mensajeria;
 import java.io.Serializable;
 
 public class PaqueteMercado extends Paquete implements Serializable, Cloneable {
+	private PaquetePersonaje personaje;
 	private int id;
-	private int idEnemigo;
+	private boolean quiereIntercambiar;
 
 	public PaqueteMercado(){
 		setComando(Comando.MERCADO);
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -18,11 +19,19 @@ public class PaqueteMercado extends Paquete implements Serializable, Cloneable {
 		this.id = id;
 	}
 
-	public int getIdEnemigo() {
-		return idEnemigo;
+	public PaquetePersonaje getPaqPersonaje() {
+		return personaje;
 	}
 
-	public void setIdEnemigo(int idEnemigo){
-		this.idEnemigo = idEnemigo;
+	public void setPaqPersonaje(PaquetePersonaje personaje) {
+		this.personaje = personaje;
+	}
+
+	public boolean getQuiereIntercambiar() {
+		return quiereIntercambiar;
+	}
+
+	public void setQuiereIntercambiar(boolean quiereIntercambiar) {
+		this.quiereIntercambiar = quiereIntercambiar;
 	}
 }
