@@ -78,8 +78,8 @@ public class VentanaChat extends JInternalFrame implements MessageHandler {
 			conn = new Connection(adp.getIP(), adp.getPuertoChat(), nombrePj, this);
 			conn.start();
 		} catch (Exception e) {
-			textArea.setCaretPosition(textArea.getText().length());
-			textArea.append("##Info: Error al conectar chat");
+			e.printStackTrace(); 
+			recibido("##Info: No se pudo conectar chat" + "\n");
 		}
 	}
 	

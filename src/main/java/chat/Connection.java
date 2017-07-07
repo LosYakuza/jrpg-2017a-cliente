@@ -38,14 +38,14 @@ public class Connection extends Thread{
 				Message msg = new Message(in.readUTF());
 				process(msg);
 			}catch(EOFException e){
-				error("Mensaje no se pudo procesar"); 
+				error("Mensaje no se pudo procesar");
 			}catch (IOException e) {
 				c=false;
 			}
 			try {
 				Thread.sleep(200);
 			} catch (InterruptedException e) {
-				e.printStackTrace(); 
+				e.printStackTrace();
 			}
 		}
 		kissoff();

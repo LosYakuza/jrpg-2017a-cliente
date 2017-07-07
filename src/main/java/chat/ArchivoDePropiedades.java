@@ -19,6 +19,7 @@ public class ArchivoDePropiedades {
 		propiedad = new Properties();
 		ip = "";
 		puertoChat = 0;
+		puertoJuego = 0;
 		this.archivo = archivo;
 	}
 	
