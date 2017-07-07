@@ -68,8 +68,9 @@ public class Cliente extends Thread {
 			entrada = new ObjectInputStream(cliente.getInputStream());
 			salida = new ObjectOutputStream(cliente.getOutputStream());
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Fallo al iniciar la aplicación. Revise la conexión con el servidor"); 
+			JOptionPane.showMessageDialog(null, "Fallo al iniciar la aplicación. Revise la conexión con el servidor");
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 
