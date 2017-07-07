@@ -56,7 +56,7 @@ public class Cliente extends Thread {
 	} 
 
 	public Cliente() {
-
+		running = true;
 		ArchivoDePropiedades adp = new ArchivoDePropiedades("config.properties");
 		adp.lectura();
 		ip = adp.getIP();
