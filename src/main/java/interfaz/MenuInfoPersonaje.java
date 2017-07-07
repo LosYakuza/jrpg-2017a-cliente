@@ -20,7 +20,8 @@ public class MenuInfoPersonaje {
 	public static final int menuSubirNivel = 2;
 	public static final int menuGanarBatalla = 3;
 	public static final int menuPerderBatalla = 4;
-	private static final String [] leyendaBoton = {"Batallar", "Volver", "Aceptar", "Aceptar", "Aceptar"};
+	public static final int menuMercado = 5;
+	private static final String [] leyendaBoton = {"Batallar", "Volver", "Aceptar", "Aceptar", "Aceptar", "Intercambiar"};
 	
 	private int x;
 	private int y;
@@ -62,6 +63,8 @@ public class MenuInfoPersonaje {
 		case menuPerderBatalla:
 			graficarMenuPerderBatalla(g);
 			break;
+		case menuMercado:
+			graficarMenuMercado(g);
 		}
 		
 		
@@ -83,6 +86,17 @@ public class MenuInfoPersonaje {
 		Pantalla.centerString(g, new Rectangle(x, y + 270, menu.getWidth(), 0), "contra los demás personajes");
 		Pantalla.centerString(g, new Rectangle(x, y + 290, menu.getWidth(), 0), "para aumentar tu nivel y");
 		Pantalla.centerString(g, new Rectangle(x, y + 310, menu.getWidth(), 0), "mejorar tus atributos.");
+	}
+	
+	private void graficarMenuMercado(Graphics g) {
+		g.setColor(Color.BLACK);
+		Pantalla.centerString(g, new Rectangle(x, y + 250, menu.getWidth(), 0), "MERCADO");
+		Pantalla.centerString(g, new Rectangle(x, y + 280, menu.getWidth(), 0), "¿Que desea hacer?");	
+
+		// Dibujo el segundo botón.
+		g.drawImage(Recursos.botonMenu, x + 50, y + 330, 200, 25, null);
+		g.setColor(Color.WHITE);
+		Pantalla.centerString(g, new Rectangle(x + 50, y + 380 - 50, 200, 25), "Ofertar");
 	}
 
 	private void graficarMenuGanarBatalla(Graphics g) {
@@ -132,6 +146,13 @@ public class MenuInfoPersonaje {
 	
 	public boolean clickEnBoton(int mouseX, int mouseY){
 		if(mouseX >= x + 50 && mouseX <= x + 250 && mouseY >= y + 380 && mouseY <= y + 405)
+			return true;
+		return false;
+	}
+
+	// Solo para mercado
+	public boolean clickEnSegundoBoton(int mouseX, int mouseY) {
+		if(mouseX >= x + 50 && mouseX <= x + 250 && mouseY >= y + 330 && mouseY <= y + 355)
 			return true;
 		return false;
 	}

@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import juego.Juego;
 import juego.Pantalla;
 import mensajeria.PaqueteBatalla;
+import mensajeria.PaqueteMercado;
 import mensajeria.PaqueteMovimiento;
 import mundo.Grafo;
 import mundo.Mundo;
@@ -22,6 +23,7 @@ import mundo.Nodo;
 import recursos.Recursos;
 import entidades.Animacion;
 import estados.Estado;
+import interfaz.HelperZonas;
 import interfaz.MenuInfoPersonaje;
 
 public class Entidad {
@@ -146,14 +148,14 @@ public class Entidad {
 		posMouse = juego.getHandlerMouse().getPosMouse();
 
 		// Tomo el click izquierdo
-		if (juego.getHandlerMouse().getNuevoClick()) {
+		if (juego.getHandlerMouse().getNuevoClick()) { //aca escucha el click
 			if (juego.getEstadoJuego().getHaySolicitud()) {
 				
 				if (juego.getEstadoJuego().getMenuEnemigo().clickEnMenu(posMouse[0], posMouse[1])) {
 					if (juego.getEstadoJuego().getMenuEnemigo().clickEnBoton(posMouse[0], posMouse[1])) {
 						
 						// pregunto si el menu emergente es de tipo batalla
-						if(juego.getEstadoJuego().getTipoSolicitud() == MenuInfoPersonaje.menuBatallar){
+						if(juego.getEstadoJuego().getTipoSolicitud() == MenuInfoPersonaje.menuBatallar){							
 							PaqueteBatalla pBatalla = new PaqueteBatalla();
 
 							pBatalla.setId(juego.getPersonaje().getId());
@@ -168,11 +170,37 @@ public class Entidad {
 								e.printStackTrace();
 								System.exit(1);
 							}
+						} else if (juego.getEstadoJuego().getTipoSolicitud() == MenuInfoPersonaje.menuMercado){ // Botón de intercambiar
+							PaqueteMercado pMercado = new PaqueteMercado();
+							pMercado.setId(juego.getPersonaje().getId());
+							pMercado.setQuiereIntercambiar(true);
+
+							juego.getEstadoJuego().setHaySolicitud(false, null, 0);
+							try {
+								juego.getCliente().getSalida().writeObject(pMercado.getJson());
+							} catch (IOException e) {
+								JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor");
+								e.printStackTrace();
+							}
 						} else {
 							juego.getEstadoJuego().setHaySolicitud(false, null, 0);
 						}
 						
 						
+					} else if (juego.getEstadoJuego().getMenuEnemigo().clickEnSegundoBoton(posMouse[0], posMouse[1])) {
+						if (juego.getEstadoJuego().getTipoSolicitud() == MenuInfoPersonaje.menuMercado) { // Botón de ofertar
+							PaqueteMercado pMercado = new PaqueteMercado();
+							pMercado.setId(juego.getPersonaje().getId());
+							pMercado.setQuiereIntercambiar(false);
+
+							juego.getEstadoJuego().setHaySolicitud(false, null, 0);
+							try {
+								juego.getCliente().getSalida().writeObject(pMercado.getJson());
+							} catch (IOException e) {
+								JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor");
+								e.printStackTrace();
+							}
+						}
 					} else if (juego.getEstadoJuego().getMenuEnemigo().clickEnCerrar(posMouse[0], posMouse[1])) {
 						juego.getEstadoJuego().setHaySolicitud(false, null, 0);
 					}
@@ -180,26 +208,42 @@ public class Entidad {
 					juego.getEstadoJuego().setHaySolicitud(false, null, 0);
 				}
 			} else {
-				Iterator<Integer> it = juego.getUbicacionPersonajes().keySet().iterator();
-				int key;
 				int tileMoverme[] = Mundo.mouseATile(posMouse[0] + juego.getCamara().getxOffset() - xOffset,
 						posMouse[1] + juego.getCamara().getyOffset() - yOffset);
-				PaqueteMovimiento actual;
+				
+				if (HelperZonas.clickEnMercado(tileMoverme[0], tileMoverme[1]) &&
+						HelperZonas.pjEnZonaMercado(juego.getUbicacionPersonaje())) {
+					juego.getEstadoJuego().setHaySolicitud(true,
+							juego.getPersonaje(), MenuInfoPersonaje.menuMercado); //aca mando al mercado si hice el click en el mercado
+					juego.getHandlerMouse().setNuevoClick(false);
+				} else { // Evalúo por posiciones para lanzar batalla
+					Iterator<Integer> it = juego.getUbicacionPersonajes().keySet().iterator();
+					int key;
+					PaqueteMovimiento actual;
+					while (it.hasNext()) {
+						key = (int) it.next();
+						actual = juego.getUbicacionPersonajes().get(key);
+						tilePersonajes = Mundo.mouseATile(actual.getPosX(), actual.getPosY());
+						if (actual != null && actual.getIdPersonaje() != juego.getPersonaje().getId()
+								&& juego.getPersonajesConectados().get(actual.getIdPersonaje()) != null
+								&& juego.getPersonajesConectados().get(actual.getIdPersonaje())
+										.getEstado() == Estado.estadoJuego) {
 
-				while (it.hasNext()) {
-					key = (int) it.next();
-					actual = juego.getUbicacionPersonajes().get(key);
-					tilePersonajes = Mundo.mouseATile(actual.getPosX(), actual.getPosY());
-					if (actual != null && actual.getIdPersonaje() != juego.getPersonaje().getId()
-							&& juego.getPersonajesConectados().get(actual.getIdPersonaje()) != null
-							&& juego.getPersonajesConectados().get(actual.getIdPersonaje())
-									.getEstado() == Estado.estadoJuego) {
-
-						if (tileMoverme[0] == tilePersonajes[0] && tileMoverme[1] == tilePersonajes[1]) {
-							idEnemigo = actual.getIdPersonaje();
-							juego.getEstadoJuego().setHaySolicitud(true,
-									juego.getPersonajesConectados().get(idEnemigo), MenuInfoPersonaje.menuBatallar);
-							juego.getHandlerMouse().setNuevoClick(false);
+							if (tileMoverme[0] == tilePersonajes[0] && tileMoverme[1] == tilePersonajes[1]) {
+								if (!HelperZonas.esZonaNeutra(juego.getUbicacionPersonaje(), tilePersonajes)) {
+									/*if (HelperZonas.esZonaMercado(juego.getUbicacionPersonaje(), actual)){
+										idEnemigo = actual.getIdPersonaje();
+										juego.getEstadoJuego().setHaySolicitud(true,
+												juego.getPersonajesConectados().get(idEnemigo), MenuInfoPersonaje.menuMercadeo); //aca mando al mercado si es zona mercado
+										juego.getHandlerMouse().setNuevoClick(false);
+									} else {*/
+										idEnemigo = actual.getIdPersonaje();
+										juego.getEstadoJuego().setHaySolicitud(true,
+												juego.getPersonajesConectados().get(idEnemigo), MenuInfoPersonaje.menuBatallar); //aca mando a la batalla
+										juego.getHandlerMouse().setNuevoClick(false);
+									//}
+								}
+							}
 						}
 					}
 				}

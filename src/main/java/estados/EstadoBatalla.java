@@ -54,6 +54,7 @@ public class EstadoBatalla extends Estado {
 	
 	public EstadoBatalla(Juego juego, PaqueteBatalla paqueteBatalla) {
 		super(juego);
+		Pantalla.invisibleChat();
 		mundo = new Mundo(juego, "recursos/mundoBatalla.txt", "recursos/mundoBatallaCapaDos.txt");
 		miTurno = paqueteBatalla.isMiTurno();
 
@@ -289,8 +290,6 @@ public class EstadoBatalla extends Estado {
 			
 			juego.getCliente().getSalida().writeObject(paquetePersonaje.getJson());
 			juego.getCliente().getSalida().writeObject(paqueteEnemigo.getJson());
-			
-			Pantalla.visibleChat();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor.");
 			e.printStackTrace();
