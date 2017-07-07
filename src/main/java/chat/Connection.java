@@ -36,13 +36,10 @@ public class Connection extends Thread{
 		while (c && stop==0) {
 			try {
 				Message msg = new Message(in.readUTF());
-				System.out.println("IN client: " + msg);
 				process(msg);
 			}catch(EOFException e){
 				
 			}catch (IOException e) {
-				e.printStackTrace();
-				
 				c=false;
 			}
 			try {
@@ -57,7 +54,6 @@ public class Connection extends Thread{
 		try {
 			this.sock.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -36,7 +36,6 @@ public class VentanaChat extends JInternalFrame implements MessageHandler {
 		setVisible(true);
 		setClosable(false);
 		((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
-		//setTitle("Chat WOME");
 
 		this.nombrePj = nombrePj;
 
@@ -76,11 +75,11 @@ public class VentanaChat extends JInternalFrame implements MessageHandler {
 		ArchivoDePropiedades adp = new ArchivoDePropiedades("config.properties");
 		adp.lectura();
 		try {
-			conn = new Connection(adp.getIP(), adp.getPuerto(), nombrePj, this);
+			conn = new Connection(adp.getIP(), adp.getPuertoChat(), nombrePj, this);
 			conn.start();
 		} catch (Exception e) {
-			e.printStackTrace();
-			//JOptionPane.showMessageDialog(this, "Error al conectar chat", "Error", JOptionPane.ERROR_MESSAGE);
+			textArea.setCaretPosition(textArea.getText().length());
+			textArea.append("##Info: Error al conectar chat");
 		}
 	}
 	
@@ -89,7 +88,7 @@ public class VentanaChat extends JInternalFrame implements MessageHandler {
 			conn.sendChat(nombrePj, textField.getText());
 		} catch (IOException e) {
 			e.printStackTrace();
-			recibido(" :: Error al enviar mensaje ::");
+			recibido("##Info: Error al enviar mensaje");
 		}
 		if(textField.getText().toString().contains("@")) {
 			String mensaje = textField.getText().toString().substring(1);
@@ -113,28 +112,11 @@ public class VentanaChat extends JInternalFrame implements MessageHandler {
 
 	@Override
 	public void messageReceived(Message m) {
-		/*if(m.getSource().equals("server")){
-			if(m.getType() == Message.STATUS_INFO){
-				if(m.getDestination().equals("clientlist")){
-					agregaUsuariosEnLista(m.getText().split(","));
-				}
-				return;
-			}
-			if(m.getType() == Message.SERVER_FATAL){
-				JOptionPane.showMessageDialog(this, m.getText(), "Error", JOptionPane.ERROR_MESSAGE);
-				if(m.getDestination().equals("login")){
-					this.usr="";
-					this.setTitle("Chat");
-				}
-				return;
-			}
-		}*/
-		//Mensaje a todos
 		if(m.getDestination().equals("all")){
 			if(m.getType() == Message.USR_MSJ && !m.getSource().equals(nombrePj)){
 				recibido(m.getSource()+ ": "+m.getText());
 			}
-		}else{		//MensajePrivado
+		}else{
 			if(m.getType() == Message.USR_MSJ){
 				recibido("<< De " + m.getSource()+ ": "+m.getText() + " >>");
 				setVisible(true);

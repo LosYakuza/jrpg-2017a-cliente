@@ -11,6 +11,8 @@ import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 
+import chat.ArchivoDePropiedades;
+import chat.Connection;
 import comandos.ComandoCliente;
 import frames.*;
 import juego.Juego;
@@ -50,18 +52,10 @@ public class Cliente extends Thread {
 
 	public Cliente() {
 
-		Scanner sc;
-
-		try {
-			sc = new Scanner(new File("config.txt"));
-			ip = sc.nextLine();
-			puerto = sc.nextInt();
-			sc.close();
-		} catch (FileNotFoundException e) {
-			// JOptionPane.showMessageDialog(null, "No se ha encontrado el
-			// archivo de configuración config.txt");
-			e.printStackTrace();
-		}
+		ArchivoDePropiedades adp = new ArchivoDePropiedades("config.properties");
+		adp.lectura();
+		ip = adp.getIP();
+		puerto = adp.getPuertoJuego();
 
 		try {
 			cliente = new Socket(ip, puerto);
