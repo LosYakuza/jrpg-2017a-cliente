@@ -1,9 +1,18 @@
 package mundo;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.Iterator;
+import java.util.Map;
 
 import estados.Estado;
 import juego.Juego;
+import juego.Pantalla;
+import mensajeria.PaqueteMovimiento;
+import mensajeria.PaquetePersonaje;
+import recursos.Recursos;
 
 public class Mundo {
 	private Juego juego;
@@ -61,18 +70,14 @@ public class Mundo {
 
 	public void graficarObstaculos(Graphics g) {
 		Tile obst;
+		Map<Integer, PaqueteMovimiento> ubicacionPersonajes =juego.getUbicacionPersonajes();
+		Map<Integer, PaquetePersonaje> personajesConectados =juego.getPersonajesConectados();
+		
 		for (int i = 0; i < alto; i++) {
 			for (int j = 0; j < ancho; j++) {
 				iso = dosDaIso(j, i);
-				// Grafico al personaje
-				if(Estado.getEstado() == juego.getEstadoJuego())
-					if (Mundo.mouseATile(juego.getUbicacionPersonaje().getPosX(),
-							juego.getUbicacionPersonaje().getPosY())[0] == j
-							&& Mundo.mouseATile(juego.getUbicacionPersonaje().getPosX(),
-									juego.getUbicacionPersonaje().getPosY())[1] == i )
-						juego.getEstadoJuego().getPersonaje().graficar(g);
-				
 				// Grafico los obstaculos
+				
 				if ((iso[0] >= xMinimo && iso[0] <= xMaximo) && (iso[1] >= yMinimo && iso[1] <= yMaximo)
 						&& getTile(j, i).esSolido()) {
 					obst = getTile(j, i);
@@ -80,8 +85,43 @@ public class Mundo {
 							(int) (iso[1] - juego.getCamara().getyOffset() - obst.getAlto()/2), obst.getAncho(),
 							obst.getAlto()); 
 				}
+				
+				// Grafico al personaje
+				
+				if(Estado.getEstado() == juego.getEstadoJuego())
+					if (Mundo.mouseATile(juego.getUbicacionPersonaje().getPosX(),
+							juego.getUbicacionPersonaje().getPosY())[0] == j
+							&& Mundo.mouseATile(juego.getUbicacionPersonaje().getPosX(),
+									juego.getUbicacionPersonaje().getPosY())[1] == i )
+						juego.getEstadoJuego().getPersonaje().graficar(g);
+				
+				// graficar enemigos
+				if(personajesConectados == null) continue;
+				Iterator<Integer> it = personajesConectados.keySet().iterator();
+				int key;
+				PaqueteMovimiento actual;
+				g.setColor(Color.WHITE);
+				g.setFont(new Font("Book Antiqua", Font.PLAIN, 15));
+				while (it.hasNext()) {
+					key = (int) it.next();
+					actual = ubicacionPersonajes.get(key);
+					PaquetePersonaje pi = personajesConectados.get(actual.getIdPersonaje());
+					if (	actual != null && 
+							actual.getIdPersonaje() != juego.getPersonaje().getId() &&
+							pi.getEstado() == Estado.estadoJuego) {
+						if (Mundo.mouseATile(actual.getPosX(),
+								actual.getPosY())[0] == j
+								&& Mundo.mouseATile(actual.getPosX(),
+										actual.getPosY())[1] == i ){
+								g.drawImage(Recursos.personaje.get(pi.getRaza()).get(actual.getDireccion())[actual.getFrame()], (int) (actual.getPosX() - juego.getCamara().getxOffset() ), (int) (actual.getPosY() - juego.getCamara().getyOffset()), 64, 64, null);
+						}
+					}
+				}
+				
+				
 			}
 		}
+		
 	}
 
 	public Tile getTile(int x, int y) {

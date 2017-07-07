@@ -20,13 +20,13 @@ public class EscuchaMensajes extends Thread {
 	private Juego juego;
 	private Cliente cliente;
 	private ObjectInputStream entrada;
-
+	
 	public EscuchaMensajes(Juego juego) {
 		this.juego = juego;
 		cliente = juego.getCliente();
 		entrada = cliente.getEntrada();
 	}
-
+	
 	public void run() {
 
 		try {
@@ -36,7 +36,7 @@ public class EscuchaMensajes extends Thread {
 			juego.setPersonajesConectados(new HashMap<Integer, PaquetePersonaje>());
 			juego.setUbicacionPersonajes(new HashMap<Integer, PaqueteMovimiento>());
 
-			while (true) {
+			while (cliente.estaEjecutando()) {
 				
 				String objetoLeido = (String)entrada.readObject();
 
@@ -48,8 +48,11 @@ public class EscuchaMensajes extends Thread {
 					
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor.");
-			e.printStackTrace();
+			if(cliente.estaEjecutando()){
+				JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor.");
+				e.printStackTrace();
+				System.exit(1);
+			}
 		}
 	}
 }

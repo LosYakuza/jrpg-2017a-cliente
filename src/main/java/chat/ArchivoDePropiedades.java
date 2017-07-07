@@ -41,10 +41,8 @@ public class ArchivoDePropiedades {
 			propiedad.setProperty("PUERTO", "" + puerto);
 			
 			propiedad.store(new FileOutputStream(archivo), null);
-		} catch (FileNotFoundException e) {
-
 		} catch (IOException e) {
-
+			e.printStackTrace();
 		}
 	}
 	

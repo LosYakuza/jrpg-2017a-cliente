@@ -31,8 +31,6 @@ public class EstadoJuego extends Estado {
 	private Entidad entidadPersonaje;
 	private PaquetePersonaje paquetePersonaje;
 	private Mundo mundo;
-	private Map<Integer, PaqueteMovimiento> ubicacionPersonajes;
-	private Map<Integer, PaquetePersonaje> personajesConectados;
 	private boolean haySolicitud;
 	private int tipoSolicitud;
 
@@ -57,6 +55,7 @@ public class EstadoJuego extends Estado {
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor al ingresar al mundo.");
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 
@@ -70,9 +69,9 @@ public class EstadoJuego extends Estado {
 	public void graficar(Graphics g) {
 		g.drawImage(Recursos.background, 0, 0, juego.getAncho(), juego.getAlto(), null);
 		mundo.graficar(g);
-		//entidadPersonaje.graficar(g);
-		graficarPersonajes(g);
+	
 		mundo.graficarObstaculos(g);
+
 		entidadPersonaje.graficarNombre(g);
 		g.drawImage(Recursos.marco, 0, 0, juego.getAncho(), juego.getAlto(), null);
 		EstadoDePersonaje.dibujarEstadoDePersonaje(g, 5, 5, paquetePersonaje, miniaturaPersonaje);
@@ -80,27 +79,6 @@ public class EstadoJuego extends Estado {
 		if(haySolicitud)
 			menuEnemigo.graficar(g, tipoSolicitud);
 			
-	}
-
-	public void graficarPersonajes(Graphics g) {
-		
-		if(juego.getPersonajesConectados() != null){
-			personajesConectados = new HashMap(juego.getPersonajesConectados());
-			ubicacionPersonajes = new HashMap(juego.getUbicacionPersonajes());
-			Iterator<Integer> it = personajesConectados.keySet().iterator();
-			int key;
-			PaqueteMovimiento actual;
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("Book Antiqua", Font.PLAIN, 15));
-			while (it.hasNext()) {
-				key = (int) it.next();
-				actual = ubicacionPersonajes.get(key);
-				if (actual != null && actual.getIdPersonaje() != juego.getPersonaje().getId() && personajesConectados.get(actual.getIdPersonaje()).getEstado() == Estado.estadoJuego) {
-						Pantalla.centerString(g, new Rectangle((int) (actual.getPosX() - juego.getCamara().getxOffset() + 32), (int) (actual.getPosY() - juego.getCamara().getyOffset() - 20 ), 0, 10), personajesConectados.get(actual.getIdPersonaje()).getNombre());
-						g.drawImage(Recursos.personaje.get(personajesConectados.get(actual.getIdPersonaje()).getRaza()).get(actual.getDireccion())[actual.getFrame()], (int) (actual.getPosX() - juego.getCamara().getxOffset() ), (int) (actual.getPosY() - juego.getCamara().getyOffset()), 64, 64, null);
-				}
-			}
-		}
 	}
 	
 	public Entidad getPersonaje() {
