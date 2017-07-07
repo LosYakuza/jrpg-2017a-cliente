@@ -11,24 +11,28 @@ public class ArchivoDePropiedades {
 
 	private Properties propiedad;
 	private String ip ;
-	private int puerto;
+	private int puertoChat;
+	private int puertoJuego;
 	private String archivo;
 	
 	public ArchivoDePropiedades(String archivo) {
 		propiedad = new Properties();
 		ip = "";
-		puerto = 0;
+		puertoChat = 0;
+		puertoJuego = 0;
 		this.archivo = archivo;
 	}
 	
 	public void lectura() {
 		try {
 			propiedad.load(new FileInputStream(archivo));
-			ip = propiedad.getProperty("IP", "localhost");
-			puerto = Integer.parseInt(propiedad.getProperty("PUERTO", "10000"));
+			ip = propiedad.getProperty("IP");
+			puertoJuego = Integer.parseInt(propiedad.getProperty("PUERTO_JUEGO"));
+			puertoChat = Integer.parseInt(propiedad.getProperty("PUERTO_CHAT"));
 		} catch (IOException e) {
 			ip = "localhost";
-			puerto = 10000;
+			puertoJuego = 80;
+			puertoChat = 443;
 		}
 	}
 	
@@ -47,8 +51,12 @@ public class ArchivoDePropiedades {
 		return ip;
 	}
 	
-	public int getPuerto() {
-		return puerto;
+	public int getPuertoChat() {
+		return puertoChat;
+	}
+	
+	public int getPuertoJuego() {
+		return puertoJuego;
 	}
 
 }

@@ -1,16 +1,13 @@
 package cliente;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Scanner;
 import javax.swing.JOptionPane;
 
-import com.google.gson.Gson;
 
+import chat.ArchivoDePropiedades;
 import comandos.ComandoCliente;
 import frames.*;
 import juego.Juego;
@@ -36,9 +33,9 @@ public class Cliente extends Thread {
 	// Ip y puerto
 	private String ip;
 	private int puerto;
-
-	private boolean running;
 	
+	private boolean running; 
+
 	public int getAccion() {
 		return accion;
 	}
@@ -49,29 +46,21 @@ public class Cliente extends Thread {
 
 	private Juego wome;
 	private MenuCarga menuCarga;
+	
+	public void parar() { 
+		running = false; 
+	} 
+	
+	public boolean estaEjecutando() { 
+		return running; 
+	} 
 
-	public void parar(){
-		running = false;
-		}
-	
-	public boolean estaEjecutando(){
-		return running;
-	}
-	
 	public Cliente() {
 		running = true;
-		Scanner sc;
-
-		try {
-			sc = new Scanner(new File("config.txt"));
-			ip = sc.nextLine();
-			puerto = sc.nextInt();
-			sc.close();
-		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo de configuración config.txt");
-			e.printStackTrace();
-			System.exit(1);
-		}
+		ArchivoDePropiedades adp = new ArchivoDePropiedades("config.properties");
+		adp.lectura();
+		ip = adp.getIP();
+		puerto = adp.getPuertoJuego();
 
 		try {
 			cliente = new Socket(ip, puerto);
@@ -79,9 +68,8 @@ public class Cliente extends Thread {
 			entrada = new ObjectInputStream(cliente.getInputStream());
 			salida = new ObjectOutputStream(cliente.getOutputStream());
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Fallo al iniciar la aplicación. Revise la conexión con el servidor");
+			JOptionPane.showMessageDialog(null, "Fallo al iniciar la aplicación. Revise la conexión con el servidor"); 
 			e.printStackTrace();
-			System.exit(1);
 		}
 	}
 

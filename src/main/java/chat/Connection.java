@@ -40,7 +40,6 @@ public class Connection extends Thread{
 			}catch(EOFException e){
 				error("Mensaje no se pudo procesar");
 			}catch (IOException e) {
-				e.printStackTrace();
 				c=false;
 			}
 			try {
@@ -56,7 +55,6 @@ public class Connection extends Thread{
 		try {
 			this.sock.close();
 		} catch (IOException e) {
-			// sockey ya cerrado no es necesario manejar error
 			e.printStackTrace();
 		}
 	}
@@ -78,15 +76,15 @@ public class Connection extends Thread{
 		this.mh.messageReceived(msg);
 
 	}
-
-	private void error(String msj) {
-		Message m = new Message();
-		m.setDestination("user");
-		m.setText(msj);
-		m.setType(Message.STATUS_INFO);
-		this.mh.messageReceived(m);
-	}
 	
+	private void error(String msj) { 
+		Message m = new Message(); 
+		m.setDestination("user"); 
+		m.setText(msj); 
+		m.setType(Message.STATUS_INFO); 
+		this.mh.messageReceived(m); 
+	} 
+
 	private void login() throws IOException {
 		Message m = new Message();
 		m.setDestination("user");
