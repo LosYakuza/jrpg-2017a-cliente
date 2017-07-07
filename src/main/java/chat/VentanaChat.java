@@ -115,6 +115,7 @@ public class VentanaChat extends JInternalFrame implements MessageHandler {
 		if(m.getDestination().equals("all")){
 			if(m.getType() == Message.USR_MSJ && !m.getSource().equals(nombrePj)){
 				recibido(m.getSource()+ ": "+m.getText());
+				setVisible(true);
 			}
 		}else{
 			if(m.getType() == Message.USR_MSJ){
