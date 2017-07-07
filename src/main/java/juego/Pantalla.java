@@ -1,20 +1,28 @@
 package juego;
 
 import java.awt.Canvas;
+import java.awt.Desktop.Action;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
 
 import com.google.gson.Gson;
 
@@ -75,7 +83,20 @@ public class Pantalla {
 
 		pantalla.add(canvas);
 		pantalla.pack();
+		
+		// Agrego KeyBinding para ocultar el chat
+		JRootPane rootPane = pantalla.getRootPane();
+		rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.ALT_MASK, true), "keyStrokeAction");
+		rootPane.getActionMap().put("keyStrokeAction", keyStrokeAction);
+
 	}
+	
+	AbstractAction keyStrokeAction = new AbstractAction() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			changeVisibilityChat();
+		}
+	};
 
 	public Canvas getCanvas() {
 		return canvas;
@@ -103,12 +124,17 @@ public class Pantalla {
 	    
 	    g.drawString(s, r.x + a, r.y + b);
 	}
-	
+
 	public static void invisibleChat() {
 		ventanaChat.setVisible(false);
 	}
-	
+
 	public static void visibleChat() {
 		ventanaChat.setVisible(true);
+	}
+
+	public static void changeVisibilityChat() {
+		// Se invierte el estado de visibilidad actual
+		ventanaChat.setVisible(!ventanaChat.isVisible());
 	}
 }
