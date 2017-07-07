@@ -1,18 +1,13 @@
 package cliente;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Scanner;
 import javax.swing.JOptionPane;
 
-import com.google.gson.Gson;
 
 import chat.ArchivoDePropiedades;
-import chat.Connection;
 import comandos.ComandoCliente;
 import frames.*;
 import juego.Juego;
