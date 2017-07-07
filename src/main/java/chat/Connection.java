@@ -38,15 +38,13 @@ public class Connection extends Thread{
 				Message msg = new Message(in.readUTF());
 				process(msg);
 			}catch(EOFException e){
-				error("Mensaje no se pudo procesar");
+				
 			}catch (IOException e) {
-				e.printStackTrace();
 				c=false;
 			}
 			try {
 				Thread.sleep(200);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
 		}
 		kissoff();
@@ -56,7 +54,6 @@ public class Connection extends Thread{
 		try {
 			this.sock.close();
 		} catch (IOException e) {
-			// sockey ya cerrado no es necesario manejar error
 			e.printStackTrace();
 		}
 	}
@@ -79,14 +76,6 @@ public class Connection extends Thread{
 
 	}
 
-	private void error(String msj) {
-		Message m = new Message();
-		m.setDestination("user");
-		m.setText(msj);
-		m.setType(Message.STATUS_INFO);
-		this.mh.messageReceived(m);
-	}
-	
 	private void login() throws IOException {
 		Message m = new Message();
 		m.setDestination("user");
