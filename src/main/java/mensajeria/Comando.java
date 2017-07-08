@@ -4,7 +4,7 @@ public abstract class Comando {
 	
 	public static final String[] CLASSNAMES =  {"Conexion","CreacionPJ","Desconectar","InicioSesion",
 			"MostrarMapas","Movimiento","Registro","Salir","Batalla","Atacar",
-			"FinalizarBatalla","ActualizarPersonaje", "Mercado", "FinalizarMercado"};
+			"FinalizarBatalla","ActualizarPersonaje", "Mercado", "FinalizarMercado", "OfertaMercado"};
 	public static final int CONEXION = 0;
 	public static final int CREACIONPJ = 1;
 	public static final int DESCONECTAR = 2;
@@ -19,6 +19,7 @@ public abstract class Comando {
 	public static final int ACTUALIZARPERSONAJE = 11;
 	public static final int MERCADO = 12;
 	public static final int FINALIZARMERCADO = 13;
+	public static final int ENVIAR_OFERTA_MERCADO = 14;
 
 	protected Paquete paquete;
 	
