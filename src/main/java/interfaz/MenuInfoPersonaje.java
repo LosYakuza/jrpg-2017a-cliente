@@ -23,7 +23,7 @@ public class MenuInfoPersonaje {
 	public static final int menuMercado = 5;
 	public static final int menuOfertaEnviada = 6;
 	private static final String [] leyendaBoton = {"Batallar", "Volver", "Aceptar", "Aceptar", "Aceptar", 
-			"Intercambiar", "Aceptar"};
+			"Ver oferta", "Aceptar"};
 	
 	private int x;
 	private int y;
@@ -107,7 +107,7 @@ public class MenuInfoPersonaje {
 	private void graficarMenuOfertaEnviada(Graphics g) {
 		g.setColor(Color.BLACK);
 		Pantalla.centerString(g, new Rectangle(x, y + 250, menu.getWidth(), 0), "MERCADO");
-		Pantalla.centerString(g, new Rectangle(x, y + 280, menu.getWidth(), 0), "Oferta aceptada!");
+		Pantalla.centerString(g, new Rectangle(x, y + 280, menu.getWidth(), 0), "Oferta enviada!");
 	}
 
 	private void graficarMenuGanarBatalla(Graphics g) {

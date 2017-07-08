@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Random;
 
 import javax.swing.JOptionPane;
 
 import dominio.Item;
+import dominio.OfertaMercado;
 import dominio.Personaje;
 import interfaz.GrafInventario;
 import interfaz.MenuInfoPersonaje;
@@ -30,9 +33,12 @@ public class EstadoMercado extends Estado {
 	// Para oferta
 	private int idItemOfrecido = -1;
 	private String nameItemRequerido = "";
+	private String nameItemOfrecido;
 
 	private boolean quiereIntercambiar;
 	private int[] posMouse;
+	private int indexIntercambio;
+	private OfertaMercado om;
 
 	int posInicialItemsX = 200;
 
@@ -49,6 +55,11 @@ public class EstadoMercado extends Estado {
 		paqFinalizarMercado.setId(personaje.getId());
 		
 		paqOfertaMercado = new PaqueteOfertaMercado();
+		paqOfertaMercado.setOfertas(paqueteMercado.getOfertas());
+		if(quiereIntercambiar) {
+			if (paqOfertaMercado.getOfertas().size() > 0)
+				om = paqOfertaMercado.getOfertas().get(getIndexOfertaRandom());
+		}
 	}
 
 	@Override
@@ -84,7 +95,8 @@ public class EstadoMercado extends Estado {
 	@Override
 	public void graficar(Graphics g) {
 		graficarElementosComunes(g);
-
+		GrafInventario.dibujarInventario(g, 5, 100, personaje);
+	
 		if(quiereIntercambiar) {
 			graficarIntercambio(g);
 		} else {
@@ -93,13 +105,23 @@ public class EstadoMercado extends Estado {
 	}
 
 	private void graficarIntercambio(Graphics g) {
-		// implementar
+		if (om != null) {
+			g.setColor(Color.WHITE);
+			g.drawString("Se requiere", 570, 190);
+			g.drawImage(Recursos.items.get(om.getNameItemRequerido()), 570, 200, null);
+			
+			g.drawString("Se ofrece", 430, 190);
+			g.drawImage(Recursos.items.get(om.getNameItemOfrecido()), 430, 200, null);
+			
+			g.setColor(Color.RED);
+			g.drawString("Toque aceptar si desea realizar el intercambio de items", 350, 300);
+		} else {
+			g.drawString("No hay ofertas disponibles", 350, 300);
+		}
+		
 	}
 	
 	private void graficarOferta(Graphics g) {
-		// Grafico inventario y leyenda
-		GrafInventario.dibujarInventario(g, 5, 100, personaje);
-		
 		// Grafico posibles items requeridos
 		g.setColor(Color.LIGHT_GRAY);
 		g.drawString("Seleccione el item que desea obtener", 350, 80);
@@ -156,6 +178,7 @@ public class EstadoMercado extends Estado {
 		try {
 			juego.getCliente().getSalida().writeObject(paqFinalizarMercado.getJson());
 			Estado.setEstado(juego.getEstadoJuego());
+			juego.getHandlerMouse().setNuevoClick(false);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Fallo la conexion con el servidor.");
 			e.printStackTrace();
@@ -163,20 +186,36 @@ public class EstadoMercado extends Estado {
 	}
 
 	private void aceptoAccionMercado() {
-		// Si no tiene los datos que ingresa el usuario, no hago nada
-		if (idItemOfrecido != -1 && nameItemRequerido != "") {
-			paqOfertaMercado.addOferta(-1, idItemOfrecido, nameItemRequerido, personaje.getId());
-			try {
-				paqOfertaMercado.setComando(Comando.ENVIAR_OFERTA_MERCADO);
-				juego.getCliente().getSalida().writeObject(paqOfertaMercado.getJson());
-				Estado.setEstado(juego.getEstadoJuego());
-				juego.getEstadoJuego().setHaySolicitud(true, juego.getPersonaje(), MenuInfoPersonaje.menuOfertaEnviada);
-				juego.getHandlerMouse().setNuevoClick(false);
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null, "Fallo la conexion con el servidor.");
-				e.printStackTrace();
+		
+		if (!quiereIntercambiar) { // Si no tiene los datos que ingresa el usuario, no hago nada
+			if (idItemOfrecido != -1 && nameItemRequerido != "") { 
+				paqOfertaMercado.addOferta(-1, idItemOfrecido, nameItemRequerido, nameItemOfrecido, personaje.getId()); 
+				try {
+					paqOfertaMercado.setComando(Comando.ENVIAR_OFERTA_MERCADO);
+					juego.getCliente().getSalida().writeObject(paqOfertaMercado.getJson());
+					juego.getEstadoJuego().setHaySolicitud(true, juego.getPersonaje(), MenuInfoPersonaje.menuOfertaEnviada);
+					
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(null, "Fallo la conexion con el servidor.");
+					e.printStackTrace();
+				}
+				finalizarMercado();
 			}
-			finalizarMercado();
+		} else {
+			paqOfertaMercado.setOfertas(new LinkedList<OfertaMercado>()); //para no tener la ref al resto de los objetos
+			if (pjHasItemRequerido()) {
+				paqOfertaMercado.addOferta(om.getIdOferta(), om.getIdItem(),
+						om.getNameItemRequerido(), om.getNameItemOfrecido(), om.getIdPersonaje()); 
+				paqOfertaMercado.setIdPjQueQuiereElItem(personaje.getId());
+				try {
+					paqOfertaMercado.setComando(Comando.INTERCAMBIAR_ITEMS);
+					juego.getCliente().getSalida().writeObject(paqOfertaMercado.getJson());
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(null, "Fallo la conexion con el servidor.");
+					e.printStackTrace();
+				}
+				finalizarMercado();
+			}
 		}
 	}
 
@@ -199,6 +238,7 @@ public class EstadoMercado extends Estado {
 		
 		int index = 3 * (fil-1) + (col-1);
 		if (index < personaje.getInventario().size() && index > -1) {
+			nameItemOfrecido = personaje.getInventario().get(index).getNombre();
 			return personaje.getInventario().get(index).getIdItem();
 		} else {
 			if (idItemOfrecido != -1) // Si ya lo tengo asignado no lo desasigno
@@ -206,5 +246,22 @@ public class EstadoMercado extends Estado {
 			else
 				return -1;
 		}
+	}
+
+	private int getIndexOfertaRandom() {
+		Random rnd = new Random();
+		int size = paqOfertaMercado.getOfertas().size();
+		if (size > 1 )
+			return rnd.nextInt(paqOfertaMercado.getOfertas().size()-1);
+		else
+			return 0;
+	}
+
+	private boolean pjHasItemRequerido() {
+		for (Item i : personaje.getInventario()) {
+			if (i.getNombre().compareTo(om.getNameItemRequerido()) == 0)
+				return true;
+		}
+		return false;
 	}
 }
